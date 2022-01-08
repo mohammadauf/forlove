@@ -1,7 +1,7 @@
 const express = require('express');
 const { render } = require('express/lib/response');
 const app = express()
-const port = 800;
+const port = process.env.PORT || 8000;
 const path = require("path")
 const Register = require("./model/register");
 require("./db/conn")
