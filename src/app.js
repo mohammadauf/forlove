@@ -1,20 +1,30 @@
 const express = require('express');
-const { render } = require('express/lib/response');
 const app = express()
 const port = process.env.PORT || 8000;
+
 const path = require("path")
 const Register = require("./model/register");
 require("./db/conn")
-app.set("view engine", "html");
 
 const staticPath = path.join((__dirname, "./public"));
-app.use(express.static(staticPath));
+app.use(express.static(staticPath))
 app.use(express.urlencoded({ extended: false }));
 
+
+app.set("view engine", "hbs");
+const templates = path.join((__dirname, "./templates/views"));
+const partials = path.join((__dirname, "./templates/partials"));
+// hbs.registerPartials(partials);
+app.set("views", templates);
 
 app.get('/', (req, res) => {
   res.render("index")
 })
+
+app.get('/cal', (req, res) => {
+  res.render('cal');
+})
+
 
 app.post("/", async (req, res) => {
   try {
@@ -24,7 +34,8 @@ app.post("/", async (req, res) => {
     });
     const result = await forLove.save();
     console.log(result);
-    res.send("<h1>Loading....</h1>")
+    // res.send("<h1>Loading....</h1>")
+    res.render("cal")
 
   } catch (error) {
     console.log(error);
